@@ -1,36 +1,44 @@
 <template>
-  <Drager
-    type="text"
-    v-bind="dragData"
-    rotatable
-    boundary
-    @resize="handleResize"
-  >
-    <div :contenteditable="true" style="text-align: center;width: 100%;">啦啦啦啦啦啦啦啦</div>
-  </Drager>
-
-  <Drager type="image" :width="200" :height="120" :left="200" :top="200" rotatable>
-    <img class="img" style="width: 100%; height: 100%" :src="imgUrl" />
-  </Drager>
+  <button @click="snap = !snap">切换snap</button>
+  <button @click="add">添加</button>
+  <div style="position: relative;width: 500px;height: 500px;background-color: #ccc;">
+    <Drager v-for="item in list" :key="item.left + item.top" :width="item.width" :height="item.height" :left="item.left" :top="item.top" :snap="snap" :markline="snap">
+    </Drager>
+  </div>
 
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import imgUrl from '../assets/demo.png'
 import Drager from 'es-drager/index'
+const snap = ref(false)
+const list = ref([
+  {
+    width: 100,
+    height: 100,
+    left: 100,
+    top: 100,
+  },
+  {
+    width: 100,
+    height: 100,
+    left: 200,
+    top: 200,
+  }
+])
 
-const textRef = ref<HTMLElement>()
-const dragData = ref<any>({
-  left: 100,
-  top: 100,
-})
-
-function handleResize(_: any, resizeType: string) {
-  // if (resizeType && !resizeType.includes('-')) {
-  //   const style = window.getComputedStyle(textRef.value!)
-  //   dragData.value.height = parseInt(style.height)
-  // }
+function add() {
+  list.value.push({
+    width: 100,
+    height: 100,
+    left: 200,
+    top: 200,
+  })
 }
-
 </script>
+
+<style>
+.es-drager-dot {
+  z-index: 100;
+}
+</style>

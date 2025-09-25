@@ -27,6 +27,10 @@ export function useMarkline(
   const update = (marklineData: MarklineData = {}) => {
     if (!props.markline) return
 
+    if (!lineX || !lineY) { // 初始化markline
+      init()
+    }
+
     if (isFn(props.markline)) {
       return props.markline(marklineData)
     }
@@ -130,7 +134,7 @@ export function useMarkline(
   onMounted(() => {
     init()
   })
-  
+
   return {
     marklineEmit
   }
